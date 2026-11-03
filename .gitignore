@@ -1,0 +1,19 @@
+# Environment files — may contain secrets
+.env
+.env.*
+!.env.example
+
+# Go build artifacts
+/bin/
+*.exe
+*.test
+*.out
+
+# Local scratch
+tmp/
+scratch/
+EOF
+
+# Editor
+.vscode/
+.idea/
