@@ -132,11 +132,11 @@ func TestValidateNegativeBalanced(t *testing.T) {
 
 func TestValidateLargeAmount(t *testing.T) {
 	t.Run("half_max_int64_balanced", func(t *testing.T) {
-		big := int64(math.MaxInt64 /2)
+		big := int64(math.MaxInt64 / 2)
 		tx := &Transaction{
-			UserID: userID,
+			UserID:      userID,
 			Description: "large safe amounts",
-			OccuredAt: time.Now(),
+			OccuredAt:   time.Now(),
 			Postings: []Posting{
 				{AccountID: checking, AmountMinor: big, Currency: "EUR"},
 				{AccountID: savings, AmountMinor: -big, Currency: "EUR"},
@@ -158,7 +158,7 @@ func TestValidateLargeAmount(t *testing.T) {
 			},
 		}
 		err := tx.Validate()
-		// Signed integer overflow wraps around to a non-zero value (-3), 
+		// Signed integer overflow wraps around to a non-zero value (-3),
 		// which the balance check catches as ErrUnbalanced.
 		if !errors.Is(err, ErrUnbalanced) {
 			t.Fatalf("Validate overflow case = %v, want ErrUnbalanced", err)
