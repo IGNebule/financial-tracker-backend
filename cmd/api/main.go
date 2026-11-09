@@ -10,6 +10,7 @@ import (
 	"financialtracker/internal/config"
 	"financialtracker/internal/db"
 	"financialtracker/internal/httpapi"
+	"financialtracker/internal/users"
 )
 
 func main() {
@@ -33,9 +34,14 @@ func run() error {
 	}
 	defer database.Close()
 
+	userRepo := users.NewRepository(database.Pool())
+
 	server := &http.Server{
-		Addr:    cfg.Addr,
-		Handler: httpapi.NewRouter(httpapi.Deps{PingDB: database.Ping}),
+		Addr: cfg.Addr,
+		Handler: httpapi.NewRouter(httpapi.Deps{
+			PingDB:     database.Ping,
+			CreateUser: userRepo.Create,
+		}),
 	}
 
 	fmt.Println("listening on", cfg.Addr)
