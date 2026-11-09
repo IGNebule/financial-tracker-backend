@@ -10,6 +10,7 @@ import (
 	"financialtracker/internal/config"
 	"financialtracker/internal/db"
 	"financialtracker/internal/httpapi"
+	"financialtracker/internal/sessions"
 	"financialtracker/internal/users"
 )
 
@@ -35,12 +36,16 @@ func run() error {
 	defer database.Close()
 
 	userRepo := users.NewRepository(database.Pool())
+	sessionRepo := sessions.NewRepository(database.Pool())
 
 	server := &http.Server{
 		Addr: cfg.Addr,
 		Handler: httpapi.NewRouter(httpapi.Deps{
-			PingDB:     database.Ping,
-			CreateUser: userRepo.Create,
+			PingDB:           database.Ping,
+			CreateUser:       userRepo.Create,
+			LoginFindUser:    userRepo.FindByEmail,
+			LoginCreateToken: sessionRepo.Create,
+			FindSession:      sessionRepo.FindByToken,
 		}),
 	}
 
