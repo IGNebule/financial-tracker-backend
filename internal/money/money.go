@@ -28,3 +28,8 @@ func Format(minorUnits int64, currency string) (string, error) {
 	fraction := minorUnits % 100
 	return fmt.Sprintf("%s%d.%02d %s", sign, whole, fraction, currency), nil
 }
+
+func IsSupportedCurrency(code string) bool {
+	_, ok := supportedCurrencies[code]
+	return ok
+}

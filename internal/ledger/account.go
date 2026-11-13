@@ -26,7 +26,7 @@ func (t AccountType) Valid() bool {
 
 type Account struct {
 	ID        uuid.UUID
-	UserId    uuid.UUID
+	UserID    uuid.UUID
 	Name      string
 	Type      AccountType
 	Currency  string

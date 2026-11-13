@@ -10,6 +10,7 @@ import (
 	"financialtracker/internal/config"
 	"financialtracker/internal/db"
 	"financialtracker/internal/httpapi"
+	"financialtracker/internal/ledger"
 	"financialtracker/internal/sessions"
 	"financialtracker/internal/users"
 )
@@ -37,6 +38,7 @@ func run() error {
 
 	userRepo := users.NewRepository(database.Pool())
 	sessionRepo := sessions.NewRepository(database.Pool())
+	ledgerRepo := ledger.NewRepository(database.Pool())
 
 	server := &http.Server{
 		Addr: cfg.Addr,
@@ -46,6 +48,8 @@ func run() error {
 			LoginFindUser:    userRepo.FindByEmail,
 			LoginCreateToken: sessionRepo.Create,
 			FindSession:      sessionRepo.FindByToken,
+			CreateAccount:    ledgerRepo.CreateAccount,
+			ListAccounts:     ledgerRepo.ListAccountsByUser,
 		}),
 	}
 

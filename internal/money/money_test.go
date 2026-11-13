@@ -62,3 +62,19 @@ func TestFormatUnsupportedCurrency(t *testing.T) {
 		t.Fatalf("Format(1234, \"XYZ\") value = %q, want empty string when error is non-nil", got)
 	}
 }
+
+func TestIsSupportedCurrency(t *testing.T) {
+	cases := map[string]bool{
+		"EUR": true,
+		"USD": true,
+		"GBP": true,
+		"eur": false,
+		"XYZ": false,
+		"":    false,
+	}
+	for code, want := range cases {
+		if got := IsSupportedCurrency(code); got != want {
+			t.Fatalf("IsSupportedCurrency(%q) = %v, want %v", code, got, want)
+		}
+	}
+}
